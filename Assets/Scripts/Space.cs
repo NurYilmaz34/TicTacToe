@@ -9,7 +9,7 @@ public class Space : MonoBehaviour
     private Button spaceButton;
     public SpaceData SpaceData      { get; set; }
     public IngameUIManager IngameUIManager  { get; set; }
-
+    
     void Start()
     {
         spaceButton = GetComponent<Button>();
@@ -18,12 +18,20 @@ public class Space : MonoBehaviour
     
     void Update()
     {
-
+        if (IngameUIManager.GameManager.PlayerSide == PlayerType.O)
+            spaceButton.interactable = false;
+        else
+            spaceButton.interactable = true;
     }
 
-    private void OnClickSpaceButton()
+    public void OnClickSpaceButton()
     {
         Debug.Log(SpaceData.Id);
-        spaceText.text = IngameUIManager.GameManager.OrderPlayerType == PlayerType.X ? "X" : "O";
+        if (string.IsNullOrEmpty(spaceText.text))
+            return;
+
+        spaceText.text = IngameUIManager.GameManager.PlayerSide == PlayerType.X ? "X" : "O";
+        SpaceData.Value = IngameUIManager.GameManager.PlayerSide.ToString();
+        IngameUIManager.ChangeOrderPlayer();
     }
 }

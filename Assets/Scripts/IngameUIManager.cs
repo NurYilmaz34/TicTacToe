@@ -28,6 +28,12 @@ public class IngameUIManager : MonoBehaviour
         
     }
 
+    public void ChangeOrderPlayer()
+    {
+
+        GameManager.Run();
+    }
+
     private void SetSpaceData()
     {
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)

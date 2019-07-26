@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TicTacToe.Data;
 using UnityEngine;
 
@@ -8,10 +9,9 @@ public class GameManager : MonoBehaviour
 {
     public List<SpaceData> SpaceDataList   { get; set; }
     public List<PlayerData> PlayerDataList { get; set; }
-    public PlayerType OrderPlayerType      { get; set; }
-    private string playerSide;
-    private string aiSide;
-    private int counter = 0;
+    public PlayerType PlayerSide           { get; set; }
+    private int counter = 0, go = 0;
+
 
     void Start()
     {
@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
+        //OrderPlayers(PlayerType.X);
+        //OrderPlayers();
     }
 
     private void CreateList()
@@ -46,38 +47,51 @@ public class GameManager : MonoBehaviour
 
     private void WhoStarting(PlayerType playerType)
     {
-        OrderPlayerType = playerType;
+        PlayerSide = playerType;
     }
-    
+
+    private PlayerType GetPlayerSide()
+    {
+        return PlayerSide;
+    }
+
     private void OrderPlayers()
     {
-        counter++;
 
+        //counter++;
         //if (counter % 2 == 1)
+        //    playerSide = PlayerType.O;
+        //else
+        //    playerSide = PlayerType.X;
+        //    playerSide = PlayerType.X;
+        if (PlayerSide == PlayerType.O)
+            PlayerSide = PlayerType.X;
+        else
+            PlayerSide = PlayerType.O;
+        //playerSide = (playerSide == PlayerType.X) ? PlayerType.O : PlayerType.X;
+        //return playerSide;
 
     }
 
-    //private void Game()
-    //{
-    //    for (int i = 0; i < buttonTxt.Length; i++)
-    //    {
-    //        if (buttonTxt[0].text == playerSide && buttonTxt[1].text == playerSide && buttonTxt[2].text == playerSide)
-    //        {
-
-    //        }
-    //        else if (buttonTxt[3].text == playerSide && buttonTxt[4].text == playerSide && buttonTxt[5].text == playerSide)
-    //        {
-
-    //        }
-    //        else if (buttonTxt[6].text == playerSide && buttonTxt[7].text == playerSide && buttonTxt[8].text == playerSide)
-    //        {
-
-    //        }
+    // playerSide = (playerSide == "X") ? "O" : "X";
 
 
+    public void Run()
+    {
+        go++;
 
-    // }
-    //}
+        for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
+        {
+            SpaceData spaceData = SpaceDataList.First(lstSpaceData => lstSpaceData.Id == i);
+
+            if (spaceText[0].text == PlayerSide && spaceText[1].text == PlayerSide && spaceText[2].text == PlayerSide)
+            {
+
+            }
+            
+        }
+        OrderPlayers();
+    }
 
 
 }
