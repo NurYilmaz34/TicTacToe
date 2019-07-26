@@ -52,9 +52,9 @@ public class GameManager : MonoBehaviour
     private void OrderPlayers()
     {
         counter++;
-        int tempVale = 0;
-        if (counter % 2 == 1)
-            tempVale = 1;
+
+        //if (counter % 2 == 1)
+
     }
 
     //private void Game()
