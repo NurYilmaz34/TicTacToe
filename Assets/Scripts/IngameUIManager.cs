@@ -12,10 +12,11 @@ public class IngameUIManager : MonoBehaviour
     private Space[] Spaces;
     [SerializeField]
     public GameManager GameManager;
-    //[SerializeField]
-    //private PlayerPanel activePlayerColor;
-    //[SerializeField]
-    //private PlayerPanel inactivePlayerColor;
+    [SerializeField]
+    private Score ScoreX;
+    [SerializeField]
+    private Score ScoreY;
+
 
     void Start()
     {
@@ -30,8 +31,7 @@ public class IngameUIManager : MonoBehaviour
 
     public void ChangeOrderPlayer()
     {
-
-        GameManager.Run();
+        GameManager.IsGameOver();
     }
 
     private void SetSpaceData()
@@ -48,4 +48,11 @@ public class IngameUIManager : MonoBehaviour
         PlayerX.PlayerData = GameManager.PlayerDataList.First(lstPlayerData => lstPlayerData.PlayerType == PlayerType.X);
         PlayerO.PlayerData = GameManager.PlayerDataList.First(lstPlayerData => lstPlayerData.PlayerType == PlayerType.O);
     }
+    
+    private void SetScoreData()
+    {
+        ScoreX.ScoreData = GameManager.ScoreDataList.First();
+        ScoreY.ScoreData = GameManager.ScoreDataList.First();
+    }
+
 }
