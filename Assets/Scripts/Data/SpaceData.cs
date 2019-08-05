@@ -6,6 +6,7 @@ namespace TicTacToe.Data
     {
         public int Id       { get; set; }
         public string Value { get; set; }
+       
 
         public SpaceData(int id, string value)
         {

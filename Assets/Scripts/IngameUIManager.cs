@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TicTacToe.Data;
 using UnityEngine;
 
@@ -12,11 +13,6 @@ public class IngameUIManager : MonoBehaviour
     private Space[] Spaces;
     [SerializeField]
     public GameManager GameManager;
-    [SerializeField]
-    private Score ScoreX;
-    [SerializeField]
-    private Score ScoreY;
-
 
     void Start()
     {
@@ -49,10 +45,5 @@ public class IngameUIManager : MonoBehaviour
         PlayerO.PlayerData = GameManager.PlayerDataList.First(lstPlayerData => lstPlayerData.PlayerType == PlayerType.O);
     }
     
-    private void SetScoreData()
-    {
-        ScoreX.ScoreData = GameManager.ScoreDataList.First();
-        ScoreY.ScoreData = GameManager.ScoreDataList.First();
-    }
 
 }

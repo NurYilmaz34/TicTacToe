@@ -17,6 +17,7 @@ namespace TicTacToe.Managers
         public int TotalDepth   { get; set; }
 
         private int CurrentSpaceId;
+        public GameManager GameManager;
         
         //private int MinimaxScore(int Depth, int SpaceId, PlayerType Maximum, int[] Scores)
         //{
@@ -35,7 +36,7 @@ namespace TicTacToe.Managers
         //        return Score(SpaceId);
         //}
 
-        public int GetAIPlayedSpace(List<SpaceData> SpaceDataList)
+        public int GetAIPlayedSpace(List<Data.SpaceData> SpaceDataList)
         {
             GenerateMinMaxTree(SpaceDataList);
 
@@ -59,9 +60,17 @@ namespace TicTacToe.Managers
             throw new NotImplementedException();
         }
 
-        private void GenerateMinMaxTree(List<SpaceData> SpaceDataList)
+        private void GenerateMinMaxTree(List<Data.SpaceData> SpaceDataList)
         {
             throw new NotImplementedException();
+        }
+
+        private void GenerateTree(NodeData root, Player player)
+        {
+            GameManager.CopySpace();
+            var newNode = new NodeData();
+            
+
         }
     }
 

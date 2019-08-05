@@ -8,13 +8,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<SpaceData> SpaceDataList   { get; set; }
-    public List<PlayerData> PlayerDataList { get; set; }
-    public List<ScoreData> ScoreDataList   { get; set; }
-    public PlayerType PlayerSide           { get; set; }
-    public PlayerType AISide               { get; set; }
-    public PlayerType HumanSide            { get; set; }
-    public SpaceData SpaceData             { get; set; }
+    public List<SpaceData> SpaceDataList     { get; set; }
+    public List<PlayerData> PlayerDataList   { get; set; }
+    public PlayerType PlayerSide             { get; set; }
+    public PlayerType AISide                 { get; set; }
+    public PlayerType HumanSide              { get; set; }
     private int Depth = 0;
     [SerializeField]
     public GameObject GameOverPanel;
@@ -24,7 +22,6 @@ public class GameManager : MonoBehaviour
         CreateList();
         CreatePlayerList();
         WhoStarting(PlayerType.X);
-
     }
 
     private void CreateList()
@@ -34,8 +31,17 @@ public class GameManager : MonoBehaviour
         {
             string spaceValue = GetPlayerSide().ToString();
             SpaceDataList.Add(new SpaceData(i, spaceValue));
+            //string[] SpaceDataList = new string[CommonConstants.SpaceDataListLength];
         }     
     }
+
+    public List<SpaceData> CopySpace()
+    {
+        List<SpaceData> CopySpaceDataList = SpaceDataList.ConvertAll(lstSpaceData => new SpaceData(lstSpaceData.Id, lstSpaceData.Value));
+
+        return CopySpaceDataList;
+    }
+
 
     private void CreatePlayerList()
     {
@@ -46,14 +52,7 @@ public class GameManager : MonoBehaviour
             PlayerDataList.Add(new PlayerData(j, playerType));
         }
     }
-    //private void CreateScoreList()
-    //{
-    //    ScoreDataList = new List<ScoreData>();
-    //    for (int j = 0; j < CommonConstants.ScoreDataListLength; j++)
-    //    {
-            
-    //    }
-    //}
+  
 
     private void WhoStarting(PlayerType playerType)
     {
@@ -88,50 +87,49 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver()
     {
-
         if (SpaceDataList[0].Value == SpaceDataList[1].Value && SpaceDataList[1].Value == SpaceDataList[2].Value)
         {
             print("winn1" + SpaceDataList[0].Value);
             GameOver();
             return false;
         }
-        else if (SpaceDataList[3].Value == GetPlayerSide().ToString() && SpaceDataList[4].Value == GetPlayerSide().ToString() && SpaceDataList[5].Value == GetPlayerSide().ToString())
+        else if (SpaceDataList[3].Value == SpaceDataList[4].Value && SpaceDataList[4].Value == SpaceDataList[5].Value)
         {
             print("winn2");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[6].Value == GetPlayerSide().ToString() && SpaceDataList[7].Value == GetPlayerSide().ToString() && SpaceDataList[8].Value == GetPlayerSide().ToString())
+        else if (SpaceDataList[6].Value == SpaceDataList[7].Value && SpaceDataList[7].Value == SpaceDataList[8].Value)
         {
             print("winn3");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[0].Value == GetPlayerSide().ToString() && SpaceDataList[3].Value == GetPlayerSide().ToString() && SpaceDataList[6].Value == GetPlayerSide().ToString())
+        else if (SpaceDataList[0].Value == SpaceDataList[3].Value  && SpaceDataList[6].Value == SpaceDataList[3].Value)
         {
             print("winn4");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[1].Value == GetPlayerSide().ToString() && SpaceDataList[4].Value == GetPlayerSide().ToString() && SpaceDataList[7].Value == GetPlayerSide().ToString())
+        else if (SpaceDataList[1].Value == SpaceDataList[4].Value && SpaceDataList[7].Value == SpaceDataList[4].Value)
         {
             print("winn5");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[2].Value == GetPlayerSide().ToString() && SpaceDataList[5].Value == GetPlayerSide().ToString() && SpaceDataList[8].Value == GetPlayerSide().ToString())
+        else if (SpaceDataList[2].Value == SpaceDataList[5].Value && SpaceDataList[8].Value == SpaceDataList[5].Value)
         {
             print("winn6");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[0].Value == GetPlayerSide().ToString() && SpaceDataList[4].Value == GetPlayerSide().ToString() && SpaceDataList[8].Value == GetPlayerSide().ToString())
+        else if (SpaceDataList[0].Value == SpaceDataList[4].Value && SpaceDataList[8].Value == SpaceDataList[4].Value)
         {
             print("winn7");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[2].Value == GetPlayerSide().ToString() && SpaceDataList[4].Value == GetPlayerSide().ToString() && SpaceDataList[6].Value == GetPlayerSide().ToString())
+        else if (SpaceDataList[2].Value == SpaceDataList[4].Value && SpaceDataList[6].Value == SpaceDataList[4].Value)
         {
             print("winn8");
             GameOver();
@@ -147,32 +145,33 @@ public class GameManager : MonoBehaviour
             OrderPlayers();
             return true;
         }
+        
     }
-
+    
     private bool IsAllSpaceDataFull()
     {
-            if (string.IsNullOrEmpty(SpaceDataList.ToString()))
+        for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
+        {
+            if (string.IsNullOrEmpty(SpaceDataList[i].Value))
                 return false;
-            else
-                return true;
-        
-        //for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
-        //{
-        //    if (SpaceDataList[i].Value != null)
-        //        return true;
-        //    else
-        //        return false;
-        //}
+        }
 
+        return true;
     }
 
     private int Score(int Depth)
     {
-        if (PlayerSide == PlayerType.O)
-            return Depth+1;
+        if (IsGameOver())
+        {
+            if (PlayerSide == PlayerType.O)
+                return Depth + 10;
 
+            else
+                return Depth - 10;
+        }
         else
-            return Depth-1;
+            return 0;
+        
     }
 
     //public PlayerType Maximum()
@@ -183,22 +182,22 @@ public class GameManager : MonoBehaviour
     //        return GetHumanSide();
     //}
 
-    private int MinimaxScore(int Depth, int SpaceId, PlayerType Maximum, int[] Scores)
-    {
-         if (!IsGameOver())
-        {
-            if (Depth == CommonConstants.StartTotalDepth)
-                return Score(SpaceId);
+    //private int MinimaxScore(int Depth, int SpaceId, PlayerType Maximum, int[] Scores)
+    //{
+    //     if (!IsGameOver())
+    //    {
+    //        if (Depth == CommonConstants.StartTotalDepth)
+    //            return Score(SpaceId);
              
-            if (Maximum == GetAiSide())
-                return Math.Max(MinimaxScore(Depth + 1, SpaceId, GetHumanSide(), Scores), MinimaxScore(Depth + 1, SpaceId, GetHumanSide(), Scores));
+    //        if (Maximum == GetAiSide())
+    //            return Math.Max(MinimaxScore(Depth + 1, SpaceId, GetHumanSide(), Scores), MinimaxScore(Depth + 1, SpaceId, GetHumanSide(), Scores));
 
-            else
-                return Math.Min(MinimaxScore(Depth + 1, SpaceId, GetAiSide(), Scores), MinimaxScore(Depth + 1, SpaceId, GetAiSide(), Scores));
-        }
-        else
-            return Score(SpaceId);
-    }
+    //        else
+    //            return Math.Min(MinimaxScore(Depth + 1, SpaceId, GetAiSide(), Scores), MinimaxScore(Depth + 1, SpaceId, GetAiSide(), Scores));
+    //    }
+    //    else
+    //        return Score(SpaceId);
+    //}
     //private void Minimax(int state, int depth, PlayerType PlayerSide)
     //{
 
