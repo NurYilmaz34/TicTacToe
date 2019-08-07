@@ -24,18 +24,17 @@ public class GameManager : MonoBehaviour
         WhoStarting(PlayerType.X);
     }
 
-    private void CreateList()
+    public void CreateList()
     {
         SpaceDataList = new List<SpaceData>();
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {
             string spaceValue = GetPlayerSide().ToString();
             SpaceDataList.Add(new SpaceData(i, spaceValue));
-            //string[] SpaceDataList = new string[CommonConstants.SpaceDataListLength];
         }     
     }
 
-    public List<SpaceData> CopySpace()
+    public List<SpaceData> CopySpaceData()
     {
         List<SpaceData> CopySpaceDataList = SpaceDataList.ConvertAll(lstSpaceData => new SpaceData(lstSpaceData.Id, lstSpaceData.Value));
 
@@ -159,7 +158,7 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    private int Score(int Depth)
+    public int Score(int Depth)
     {
         if (IsGameOver())
         {
@@ -173,39 +172,5 @@ public class GameManager : MonoBehaviour
             return 0;
         
     }
-
-    //public PlayerType Maximum()
-    //{
-    //    if (PlayerSide == PlayerType.O)
-    //        return GetAiSide();
-    //    else
-    //        return GetHumanSide();
-    //}
-
-    //private int MinimaxScore(int Depth, int SpaceId, PlayerType Maximum, int[] Scores)
-    //{
-    //     if (!IsGameOver())
-    //    {
-    //        if (Depth == CommonConstants.StartTotalDepth)
-    //            return Score(SpaceId);
-             
-    //        if (Maximum == GetAiSide())
-    //            return Math.Max(MinimaxScore(Depth + 1, SpaceId, GetHumanSide(), Scores), MinimaxScore(Depth + 1, SpaceId, GetHumanSide(), Scores));
-
-    //        else
-    //            return Math.Min(MinimaxScore(Depth + 1, SpaceId, GetAiSide(), Scores), MinimaxScore(Depth + 1, SpaceId, GetAiSide(), Scores));
-    //    }
-    //    else
-    //        return Score(SpaceId);
-    //}
-    //private void Minimax(int state, int depth, PlayerType PlayerSide)
-    //{
-
-    //    if (depth == 0)
-    //}
-
     
-
-
-
 }

@@ -20,11 +20,6 @@ public class IngameUIManager : MonoBehaviour
         SetPlayerData();
     }
 
-    void Update()
-    {
-        
-    }
-
     public void ChangeOrderPlayer()
     {
         GameManager.IsGameOver();
