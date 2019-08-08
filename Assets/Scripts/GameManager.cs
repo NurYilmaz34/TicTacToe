@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     public PlayerType PlayerSide             { get; set; }
     public PlayerType AISide                 { get; set; }
     public PlayerType HumanSide              { get; set; }
-    private int Depth = 0;
     [SerializeField]
     public GameObject GameOverPanel;
 
@@ -29,8 +28,7 @@ public class GameManager : MonoBehaviour
         SpaceDataList = new List<SpaceData>();
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {
-            string spaceValue = GetPlayerSide().ToString();
-            SpaceDataList.Add(new SpaceData(i, spaceValue));
+            SpaceDataList.Add(new SpaceData(i, string.Empty));
         }     
     }
 
@@ -86,49 +84,49 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver()
     {
-        if (SpaceDataList[0].Value == SpaceDataList[1].Value && SpaceDataList[1].Value == SpaceDataList[2].Value)
+        if (!string.IsNullOrEmpty(SpaceDataList[0].Value) && SpaceDataList[0].Value == SpaceDataList[1].Value && SpaceDataList[1].Value == SpaceDataList[2].Value)
         {
             print("winn1" + SpaceDataList[0].Value);
             GameOver();
             return false;
         }
-        else if (SpaceDataList[3].Value == SpaceDataList[4].Value && SpaceDataList[4].Value == SpaceDataList[5].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataList[3].Value) && SpaceDataList[3].Value == SpaceDataList[4].Value && SpaceDataList[4].Value == SpaceDataList[5].Value)
         {
             print("winn2");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[6].Value == SpaceDataList[7].Value && SpaceDataList[7].Value == SpaceDataList[8].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataList[6].Value) && SpaceDataList[6].Value == SpaceDataList[7].Value && SpaceDataList[7].Value == SpaceDataList[8].Value)
         {
             print("winn3");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[0].Value == SpaceDataList[3].Value  && SpaceDataList[6].Value == SpaceDataList[3].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataList[0].Value) && SpaceDataList[0].Value == SpaceDataList[3].Value  && SpaceDataList[6].Value == SpaceDataList[3].Value)
         {
             print("winn4");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[1].Value == SpaceDataList[4].Value && SpaceDataList[7].Value == SpaceDataList[4].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataList[1].Value) && SpaceDataList[1].Value == SpaceDataList[4].Value && SpaceDataList[7].Value == SpaceDataList[4].Value)
         {
             print("winn5");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[2].Value == SpaceDataList[5].Value && SpaceDataList[8].Value == SpaceDataList[5].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataList[2].Value) && SpaceDataList[2].Value == SpaceDataList[5].Value && SpaceDataList[8].Value == SpaceDataList[5].Value)
         {
             print("winn6");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[0].Value == SpaceDataList[4].Value && SpaceDataList[8].Value == SpaceDataList[4].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataList[0].Value) && SpaceDataList[0].Value == SpaceDataList[4].Value && SpaceDataList[8].Value == SpaceDataList[4].Value)
         {
             print("winn7");
             GameOver();
             return false;
         }
-        else if (SpaceDataList[2].Value == SpaceDataList[4].Value && SpaceDataList[6].Value == SpaceDataList[4].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataList[2].Value) && SpaceDataList[2].Value == SpaceDataList[4].Value && SpaceDataList[6].Value == SpaceDataList[4].Value)
         {
             print("winn8");
             GameOver();

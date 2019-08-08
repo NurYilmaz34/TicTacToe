@@ -18,6 +18,7 @@ namespace TicTacToe.Managers
         public int TotalDepth   { get; set; }
 
         private int CurrentSpaceId;
+        public NodeData NodeData;
         public GameManager GameManager;
         
         //private int MinimaxScore(int Depth, int SpaceId, PlayerType Maximum, int[] Scores)
@@ -63,31 +64,35 @@ namespace TicTacToe.Managers
 
         private void GenerateMinMaxTree(List<SpaceData> SpaceDataList)
         {
+            GenerateMinMaxTree(new NodeData(), PlayerType.X, CommonConstants.StartTotalDepth);
             throw new NotImplementedException();
+
         }
 
-        private void GenerateMinMaxTree(NodeData root, PlayerType player)
+        private void GenerateMinMaxTree(NodeData root, PlayerType player, int currentDepth)
         {
-            for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
+            List<SpaceData> RootCopyDataList = GameManager.CopySpaceData();
+
+            for (int i = 0; i < currentDepth; i++)
             {
-                //List<SpaceData> RootCopyDataList = root.NodeSpaceDataList.ConvertAll(lstSpaceData => new SpaceData(lstSpaceData.Id, lstSpaceData.Value));
-                List<SpaceData> RootCopyDataList = GameManager.CopySpaceData();
                 RootCopyDataList[i].Value = player.ToString();
                 
                 NodeData newNode = new NodeData();
                 newNode.NodeSpaceDataList = RootCopyDataList;
                 newNode.ParentNode = root;
                 root.Children.Add(newNode);
-                
+                root.Depth++;
+
                 if (player == PlayerType.O)
                 {
                     newNode.Player = PlayerType.X;
-                    GenerateMinMaxTree(newNode, PlayerType.X);
+                    GenerateMinMaxTree(newNode, PlayerType.X, currentDepth -1 );
+                    
                 }
                 else if (player == PlayerType.X)
                 {
                     newNode.Player = PlayerType.O;
-                    GenerateMinMaxTree(newNode, PlayerType.O);
+                    GenerateMinMaxTree(newNode, PlayerType.O, currentDepth -1);
                 }
                 else
                     return;
@@ -100,13 +105,33 @@ namespace TicTacToe.Managers
             }
             else
             {
-                if(root.Player == PlayerType.O)
+                if(root.Player == PlayerType.X)
                 {
+                    int maxValue = root.MinimaxValue;
+                    root.MinimaxValue = GameManager.Score(Depth);
 
+                    foreach (NodeData child in root.Children)
+                    {
+                        if (child.MinimaxValue > maxValue)
+                        {
+                            maxValue = child.MinimaxValue;
+                        }
+                    }
+                    root.MinimaxValue = maxValue;
                 }
                 else
                 {
+                    int minValue = root.MinimaxValue;
+                    root.MinimaxValue = GameManager.Score(Depth);
 
+                    foreach (NodeData child in root.Children)
+                    {
+                        if (child.MinimaxValue < minValue)
+                        {
+                            minValue = child.MinimaxValue;
+                        }
+                    }
+                    root.MinimaxValue = minValue;
                 }
             }
 
