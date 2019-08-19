@@ -15,7 +15,6 @@ namespace TicTacToe.Managers
 
         public bool IsGameOver             { get; set; }
         public int Depth                   { get; set; }
-        public List<NodeData> FullNodeData { get; set; }
         private int CurrentSpaceId;
         public NodeData NodeData;
         public GameManager GameManager;
@@ -80,6 +79,7 @@ namespace TicTacToe.Managers
            
             List<SpaceData> RootCopyDataList = GameManager.CopySpaceData();
             currentDepth = CurrentDepth(RootCopyDataList);
+            List<NodeData> FullNodeData = new List<NodeData>();
 
             for (int i = 0; i < currentDepth; i++)
             {
@@ -109,8 +109,7 @@ namespace TicTacToe.Managers
                         }
                         else
                             return;
-                        //List<SpaceData> CurrentFullSpaceData = new List<SpaceData>();
-                        //List<SpaceData> RootCopyDataList = CurrentFullSpaceData.ConvertAll(lstSpaceData => new SpaceData(lstSpaceData.Id, lstSpaceData.Value));
+                        
                         RootCopyDataList.Add(new SpaceData(i, player.ToString()));
                         FullNodeData.Add(newNode);
                     }
@@ -118,9 +117,10 @@ namespace TicTacToe.Managers
                 else
                     currentDepth++;
             }
-
+            
             if (root.Children.Count == 0)
             {
+                FullNodeData.First(lstData => lstData.MinimaxValue == Depth);
                 root.MinimaxValue = GameManager.Score(Depth);
             }
             else
