@@ -13,10 +13,9 @@ namespace TicTacToe.Managers
         AIUserManager() { }
         static AIUserManager() { }
 
-        public bool IsGameOver  { get; set; }
-        public int Depth        { get; set; }
-        public int TotalDepth   { get; set; }
-
+        public bool IsGameOver             { get; set; }
+        public int Depth                   { get; set; }
+        public List<NodeData> FullNodeData { get; set; }
         private int CurrentSpaceId;
         public NodeData NodeData;
         public GameManager GameManager;
@@ -40,63 +39,84 @@ namespace TicTacToe.Managers
 
         public int GetAIPlayedSpace(List<SpaceData> SpaceDataList)
         {
-            GenerateMinMaxTree(SpaceDataList);
-
+            //GenerateMinMaxTree(SpaceDataList);
+            //GenerateMinMaxTree(new NodeData(), Player, Depth);
+            GenerateMinMaxTree(new NodeData(), GameManager.PlayerSide, CurrentDepth(NodeData.NodeSpaceDataList));
             for (int i = 0; i < Depth; i++)
             {
-                UpTree();
+                //UpTree();
             }
 
-            MinusDepth();
+            //MinusDepth();
 
             return CurrentSpaceId;
         }
 
-        private void MinusDepth()
-        {
-            TotalDepth -= 2;
-        }
+        //private void MinusDepth()
+        //{
+        //    TotalDepth -= 2;
+        //}
 
-        private void UpTree()
-        {
-            throw new NotImplementedException();
-        }
+        //private void UpTree()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        private void GenerateMinMaxTree(List<SpaceData> SpaceDataList)
-        {
-            GenerateMinMaxTree(new NodeData(), PlayerType.X, CommonConstants.StartTotalDepth);
-            throw new NotImplementedException();
+        //private void GenerateMinMaxTree(List<SpaceData> SpaceDataList)
+        //{
+        //    GenerateMinMaxTree(new NodeData(), PlayerType.X, CommonConstants.StartTotalDepth);
+        //    throw new NotImplementedException();
 
+        //}
+
+        private int CurrentDepth(List<SpaceData> SpaceDataList)
+        {
+            int NummberofEmptyData = CommonConstants.StartTotalDepth - SpaceDataList.Count;
+            return NummberofEmptyData;
         }
 
         private void GenerateMinMaxTree(NodeData root, PlayerType player, int currentDepth)
         {
+           
             List<SpaceData> RootCopyDataList = GameManager.CopySpaceData();
+            currentDepth = CurrentDepth(RootCopyDataList);
 
             for (int i = 0; i < currentDepth; i++)
             {
-                RootCopyDataList[i].Value = player.ToString();
-                
-                NodeData newNode = new NodeData();
-                newNode.NodeSpaceDataList = RootCopyDataList;
-                newNode.ParentNode = root;
-                root.Children.Add(newNode);
-                root.Depth++;
+                if (string.IsNullOrEmpty(RootCopyDataList[i].Value))
+                {
+                    RootCopyDataList[i].Value = player.ToString();
+                    NodeData newNode = new NodeData();
+                    newNode.NodeSpaceDataList = RootCopyDataList;
+                    newNode.ParentNode = root;
+                    root.Children.Add(newNode);
+                    root.Depth++;
 
-                if (player == PlayerType.O)
-                {
-                    newNode.Player = PlayerType.X;
-                    GenerateMinMaxTree(newNode, PlayerType.X, currentDepth -1 );
-                    
-                }
-                else if (player == PlayerType.X)
-                {
-                    newNode.Player = PlayerType.O;
-                    GenerateMinMaxTree(newNode, PlayerType.O, currentDepth -1);
+                    if (currentDepth == 0)
+                        IsGameOver = true;
+                    else
+                    {
+                        if (player == PlayerType.O)
+                        {
+                            newNode.Player = PlayerType.X;
+                            GenerateMinMaxTree(newNode, PlayerType.X, currentDepth - 1);
+
+                        }
+                        else if (player == PlayerType.X)
+                        {
+                            newNode.Player = PlayerType.O;
+                            GenerateMinMaxTree(newNode, PlayerType.O, currentDepth - 1);
+                        }
+                        else
+                            return;
+                        //List<SpaceData> CurrentFullSpaceData = new List<SpaceData>();
+                        //List<SpaceData> RootCopyDataList = CurrentFullSpaceData.ConvertAll(lstSpaceData => new SpaceData(lstSpaceData.Id, lstSpaceData.Value));
+                        RootCopyDataList.Add(new SpaceData(i, player.ToString()));
+                        FullNodeData.Add(newNode);
+                    }
                 }
                 else
-                    return;
-
+                    currentDepth++;
             }
 
             if (root.Children.Count == 0)

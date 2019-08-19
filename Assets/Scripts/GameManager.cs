@@ -161,10 +161,10 @@ public class GameManager : MonoBehaviour
         if (IsGameOver())
         {
             if (PlayerSide == PlayerType.O)
-                return Depth + 10;
+                return Depth - 10;
 
             else
-                return Depth - 10;
+                return Depth + 10;
         }
         else
             return 0;

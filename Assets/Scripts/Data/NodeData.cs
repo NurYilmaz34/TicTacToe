@@ -22,7 +22,7 @@ public class NodeData
         Children.Add(node);
     }
 
-    public List<NodeData> getChildNodes()
+    public List<NodeData> GetChildNodes()
     {
         return Children;
     }
