@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<SpaceData> SpaceDataList     { get; set; }
+    public SpaceData[] SpaceDataList         { get; set; }
     public List<PlayerData> PlayerDataList   { get; set; }
     public PlayerType PlayerSide             { get; set; }
     public PlayerType AISide                 { get; set; }
@@ -26,20 +26,12 @@ public class GameManager : MonoBehaviour
 
     public void CreateList()
     {
-        SpaceDataList = new List<SpaceData>();
+        SpaceDataList = new SpaceData[CommonConstants.SpaceDataListLength];
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {
-            SpaceDataList.Add(new SpaceData(i, string.Empty));
+            SpaceDataList[i] = new SpaceData(i, string.Empty);
         }     
     }
-
-    public List<SpaceData> CopySpaceData()
-    {
-        List<SpaceData> CopySpaceDataList = SpaceDataList.ConvertAll(lstSpaceData => new SpaceData(lstSpaceData.Id, lstSpaceData.Value));
-
-        return CopySpaceDataList;
-    }
-
 
     private void CreatePlayerList()
     {

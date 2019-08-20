@@ -1,25 +1,25 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using TicTacToe.Data;
+﻿using System.Collections.Generic;
 
-public class NodeData 
+namespace TicTacToe.Data
 {
-    public NodeData ParentNode { get; set; }
-    public List<NodeData> ChildList;
-    public List<SpaceData> NodeSpaceDataList;
-    public int MinimaxValue;
-    public int Depth;
-    public PlayerType Player;
+    public class NodeData
+    {
+        public NodeData ParentNode          { get; set; }
+        public List<NodeData> ChildList     { get; set; }
+        public string SpaceDataListString   { get; set; }
+        public int MinimaxValue;
+        public int Depth;
+        public PlayerType Player;
 
-    public NodeData()
-    {
-        ChildList = new List<NodeData>();
+        public NodeData()
+        {
+            ChildList = new List<NodeData>();
+        }
+
+        public List<NodeData> GetChildNodes()
+        {
+            return ChildList;
+        }
+
     }
-    
-    public List<NodeData> GetChildNodes()
-    {
-        return ChildList;
-    }
-    
 }

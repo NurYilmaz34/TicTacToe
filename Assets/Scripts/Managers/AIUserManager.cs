@@ -1,10 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using TicTacToe.Data;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using Random = System.Random;
 
 namespace TicTacToe.Managers
 {
@@ -38,45 +34,42 @@ namespace TicTacToe.Managers
         //        return Score(SpaceId);
         //}
 
-        public int GetAIPlayedSpace(List<SpaceData> SpaceDataList)
+        public int GetAIPlayedSpace(SpaceData[] SpaceDataArray)
         {
             NodeData rootNode = new NodeData
             {
                 Depth = CommonConstants.FirstNodeDataDepth,
-                NodeSpaceDataList = SpaceDataList,
+                SpaceDataListString = GetArrayString(SpaceDataArray),
                 ParentNode = null,
                 Player = PlayerType.O
             };
 
             GenerateMinMaxTree(rootNode);
-            Debug.Log(rootNode.Player.ToString());
-            //for (int i = 0; i < Depth; i++)
-            //{
-            //    //UpTree();
-            //}
-
-            //MinusDepth();
-            //CurrentSpaceId = 
-
+            Debug.Log(rootNode.SpaceDataListString);
             return CurrentSpaceId;
         }
 
-        //private void MinusDepth()
-        //{
-        //    TotalDepth -= 2;
-        //}
+        private string GetArrayString(SpaceData[] spaceDataArray)
+        {
+            string arrayString = string.Empty;
+            for (int i = 0; i < spaceDataArray.Length; i++)
+            {
+                arrayString += string.IsNullOrEmpty(spaceDataArray[i].Value) ? "-" : spaceDataArray[i].Value;
+            }
+            return arrayString;
+        }
 
-        //private void UpTree()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        private SpaceData[] GetArray(string arrayString)
+        {
+            SpaceData[] spaceDataArray = new SpaceData[arrayString.Length];
 
-        //private void GenerateMinMaxTree(List<SpaceData> SpaceDataList)
-        //{
-        //    GenerateMinMaxTree(new NodeData(), PlayerType.X, CommonConstants.StartTotalDepth);
-        //    throw new NotImplementedException();
+            for (int i = 0; i < arrayString.Length; i++)
+            {
+                spaceDataArray[i] = new SpaceData(i, arrayString[i].ToString() == "-" ? "" : arrayString[i].ToString());
+            }
 
-        //}
+            return spaceDataArray;
+        }
 
         private int GetCurrentDepth(int spaceDataListCount)
         {
@@ -85,32 +78,33 @@ namespace TicTacToe.Managers
 
         private void GenerateMinMaxTree(NodeData parentNode)
         {
-            List<SpaceData> RootCopyDataList = GameManager.CopySpaceData();
-            int remainingDepth = RootCopyDataList.Where(lstData => string.IsNullOrEmpty(lstData.Value)).ToList().Count;
+            SpaceData[] RootCopyDataArray = GetArray(parentNode.SpaceDataListString);
 
-            for (int i = 0; i < remainingDepth; i++)
+            int remainingDepth = RootCopyDataArray.Where(lstData => string.IsNullOrEmpty(lstData.Value)).ToList().Count;
+            int childCount = remainingDepth;
+            for (int i = 0; i < childCount; i++)
             {
-                if (string.IsNullOrEmpty(RootCopyDataList[i].Value))
+                if (string.IsNullOrEmpty(RootCopyDataArray[i].Value))
                 {
-                    RootCopyDataList[i].Value = parentNode.Player.ToString();
+                    RootCopyDataArray = GetArray(parentNode.SpaceDataListString);
+                    RootCopyDataArray[i].Value = parentNode.Player.ToString();
 
                     NodeData childNode = new NodeData
                     {
                         Depth = GetCurrentDepth(remainingDepth),
-                        NodeSpaceDataList = RootCopyDataList,
+                        SpaceDataListString = GetArrayString(RootCopyDataArray),
                         ParentNode = parentNode,
                         Player = parentNode.Player == PlayerType.O ? PlayerType.X : PlayerType.O
                     };
 
                     parentNode.ChildList.Add(childNode);
-
                     if (remainingDepth == 0)
                         return;
                     else
                         GenerateMinMaxTree(childNode);
                 }
                 else
-                    continue;
+                    childCount++;
             }
 
             //if (parentNode.ChildList.Count == 0)
