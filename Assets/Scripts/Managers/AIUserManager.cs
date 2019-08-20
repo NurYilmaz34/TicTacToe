@@ -4,6 +4,7 @@ using TicTacToe.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Random = System.Random;
 
 namespace TicTacToe.Managers
 {
@@ -13,12 +14,13 @@ namespace TicTacToe.Managers
         AIUserManager() { }
         static AIUserManager() { }
 
-        public bool IsGameOver             { get; set; }
-        public int Depth                   { get; set; }
+        public bool IsGameOver { get; set; }
+        public int Depth { get; set; }
         private int CurrentSpaceId;
         public NodeData NodeData;
         public GameManager GameManager;
-        
+
+
         //private int MinimaxScore(int Depth, int SpaceId, PlayerType Maximum, int[] Scores)
         //{
         //    if (!IsGameOver)
@@ -38,15 +40,23 @@ namespace TicTacToe.Managers
 
         public int GetAIPlayedSpace(List<SpaceData> SpaceDataList)
         {
-            //GenerateMinMaxTree(SpaceDataList);
-            //GenerateMinMaxTree(new NodeData(), Player, Depth);
-            GenerateMinMaxTree(new NodeData(), GameManager.PlayerSide, CurrentDepth(NodeData.NodeSpaceDataList));
-            for (int i = 0; i < Depth; i++)
+            NodeData rootNode = new NodeData
             {
-                //UpTree();
-            }
+                Depth = CommonConstants.FirstNodeDataDepth,
+                NodeSpaceDataList = SpaceDataList,
+                ParentNode = null,
+                Player = PlayerType.O
+            };
+
+            GenerateMinMaxTree(rootNode);
+            Debug.Log(rootNode.Player.ToString());
+            //for (int i = 0; i < Depth; i++)
+            //{
+            //    //UpTree();
+            //}
 
             //MinusDepth();
+            //CurrentSpaceId = 
 
             return CurrentSpaceId;
         }
@@ -68,94 +78,90 @@ namespace TicTacToe.Managers
 
         //}
 
-        private int CurrentDepth(List<SpaceData> SpaceDataList)
+        private int GetCurrentDepth(int spaceDataListCount)
         {
-            int NummberofEmptyData = CommonConstants.StartTotalDepth - SpaceDataList.Count;
-            return NummberofEmptyData;
+            return CommonConstants.StartTotalDepth - spaceDataListCount;
         }
 
-        private void GenerateMinMaxTree(NodeData root, PlayerType player, int currentDepth)
+        private void GenerateMinMaxTree(NodeData parentNode)
         {
-           
             List<SpaceData> RootCopyDataList = GameManager.CopySpaceData();
-            currentDepth = CurrentDepth(RootCopyDataList);
-            List<NodeData> FullNodeData = new List<NodeData>();
+            int remainingDepth = RootCopyDataList.Where(lstData => string.IsNullOrEmpty(lstData.Value)).ToList().Count;
 
-            for (int i = 0; i < currentDepth; i++)
+            for (int i = 0; i < remainingDepth; i++)
             {
                 if (string.IsNullOrEmpty(RootCopyDataList[i].Value))
                 {
-                    RootCopyDataList[i].Value = player.ToString();
-                    NodeData newNode = new NodeData();
-                    newNode.NodeSpaceDataList = RootCopyDataList;
-                    newNode.ParentNode = root;
-                    root.Children.Add(newNode);
-                    root.Depth++;
+                    RootCopyDataList[i].Value = parentNode.Player.ToString();
 
-                    if (currentDepth == 0)
-                        IsGameOver = true;
+                    NodeData childNode = new NodeData
+                    {
+                        Depth = GetCurrentDepth(remainingDepth),
+                        NodeSpaceDataList = RootCopyDataList,
+                        ParentNode = parentNode,
+                        Player = parentNode.Player == PlayerType.O ? PlayerType.X : PlayerType.O
+                    };
+
+                    parentNode.ChildList.Add(childNode);
+
+                    if (remainingDepth == 0)
+                        return;
                     else
-                    {
-                        if (player == PlayerType.O)
-                        {
-                            newNode.Player = PlayerType.X;
-                            GenerateMinMaxTree(newNode, PlayerType.X, currentDepth - 1);
-
-                        }
-                        else if (player == PlayerType.X)
-                        {
-                            newNode.Player = PlayerType.O;
-                            GenerateMinMaxTree(newNode, PlayerType.O, currentDepth - 1);
-                        }
-                        else
-                            return;
-                        
-                        RootCopyDataList.Add(new SpaceData(i, player.ToString()));
-                        FullNodeData.Add(newNode);
-                    }
+                        GenerateMinMaxTree(childNode);
                 }
                 else
-                    currentDepth++;
+                    continue;
             }
-            
-            if (root.Children.Count == 0)
-            {
-                FullNodeData.First(lstData => lstData.MinimaxValue == Depth);
-                root.MinimaxValue = GameManager.Score(Depth);
-            }
-            else
-            {
-                if(root.Player == PlayerType.X)
-                {
-                    int maxValue = root.MinimaxValue;
-                    root.MinimaxValue = GameManager.Score(Depth);
 
-                    foreach (NodeData child in root.Children)
-                    {
-                        if (child.MinimaxValue > maxValue)
-                        {
-                            maxValue = child.MinimaxValue;
-                        }
-                    }
-                    root.MinimaxValue = maxValue;
-                }
-                else
-                {
-                    int minValue = root.MinimaxValue;
-                    root.MinimaxValue = GameManager.Score(Depth);
+            //if (parentNode.ChildList.Count == 0)
+            //{
+            //    //FullNodeData.First(lstData => lstData.MinimaxValue == Depth);
+            //    parentNode.MinimaxValue = GameManager.Score(parentNode.Depth);
 
-                    foreach (NodeData child in root.Children)
-                    {
-                        if (child.MinimaxValue < minValue)
-                        {
-                            minValue = child.MinimaxValue;
-                        }
-                    }
-                    root.MinimaxValue = minValue;
-                }
+            //}
+            //else
+            //{
+            //    if (parentNode.Player == PlayerType.X)
+            //    {
+            //        parentNode.MinimaxValue = GameManager.Score(parentNode.Depth);
+            //        int maxvalue = parentNode.MinimaxValue;
+
+            //        //foreach (nodedata child in root.child)
+            //        //{
+            //        //    if (child.minimaxvalue > maxvalue)
+            //        //    {
+            //        //        maxvalue = child.minimaxvalue;
+            //        //    }
+            //        //}
+            //        //root.minimaxvalue = maxvalue;
+
+            //        int maxValue = NodeData.GetChildNodes().Max(lstData => lstData.MinimaxValue);
+            //        if (maxValue > parentNode.MinimaxValue)
+            //            parentNode.MinimaxValue = maxValue;
+
+
+            //        List<NodeData> Values = new List<NodeData>();
+            //        Values.Add(parentNode.ParentNode);
+            //        int ultimateValue = Random.Next(Values);
+            //    }
+            //    else
+            //    {
+            //        parentNode.MinimaxValue = GameManager.Score(parentNode.Depth);
+            //        int minValue = parentNode.MinimaxValue;
+
+            //        foreach (NodeData child in parentNode.ChildList)
+            //        {
+            //            if (child.MinimaxValue < minValue)
+            //            {
+            //                minValue = child.MinimaxValue;
+            //            }
+            //        }
+            //        parentNode.MinimaxValue = minValue;
+
+            //        //int minValue = NodeData.GetChildNodes().Where(lstData => lstData.Depth == NodeData.ParentNode.Depth + 1).Min(lstData => lstData.MinimaxValue);
+            //    }
             }
+
 
         }
     }
-
-}

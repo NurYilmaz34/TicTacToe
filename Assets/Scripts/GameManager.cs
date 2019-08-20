@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
         CreateList();
         CreatePlayerList();
         WhoStarting(PlayerType.X);
+        AIUserManager.Instance.GameManager = this;
     }
 
     public void CreateList()
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver()
     {
+        AIUserManager.Instance.GetAIPlayedSpace(SpaceDataList);
         if (!string.IsNullOrEmpty(SpaceDataList[0].Value) && SpaceDataList[0].Value == SpaceDataList[1].Value && SpaceDataList[1].Value == SpaceDataList[2].Value)
         {
             print("winn1" + SpaceDataList[0].Value);
@@ -167,7 +169,7 @@ public class GameManager : MonoBehaviour
                 return Depth + 10;
         }
         else
-            return 0;
+            return Depth;
         
     }
     

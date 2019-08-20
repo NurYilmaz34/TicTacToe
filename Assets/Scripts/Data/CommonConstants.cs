@@ -14,6 +14,7 @@ namespace TicTacToe.Data
         public const int SpaceDataListLength = 9;
         public const int PlayerDataListLength = 2;
         public const int StartTotalDepth = 9;
+        public const int FirstNodeDataDepth = 0;
     }
     
 }

@@ -6,7 +6,7 @@ using TicTacToe.Data;
 public class NodeData 
 {
     public NodeData ParentNode { get; set; }
-    public List<NodeData> Children;
+    public List<NodeData> ChildList;
     public List<SpaceData> NodeSpaceDataList;
     public int MinimaxValue;
     public int Depth;
@@ -14,17 +14,12 @@ public class NodeData
 
     public NodeData()
     {
-        Children = new List<NodeData>();
+        ChildList = new List<NodeData>();
     }
     
-    public void AddNode(NodeData node)
-    {
-        Children.Add(node);
-    }
-
     public List<NodeData> GetChildNodes()
     {
-        return Children;
+        return ChildList;
     }
     
 }
