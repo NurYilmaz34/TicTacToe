@@ -29,7 +29,7 @@ public class IngameUIManager : MonoBehaviour
     {
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {
-            Spaces[i].SpaceData = GameManager.SpaceDataList.First(lstData => lstData.Id == i);
+            Spaces[i].SpaceData = GameManager.SpaceDataArray.First(lstData => lstData.Id == i);
             Spaces[i].IngameUIManager = this;
         }
     }

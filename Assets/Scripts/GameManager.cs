@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public SpaceData[] SpaceDataList         { get; set; }
+    public SpaceData[] SpaceDataArray         { get; set; }
     public List<PlayerData> PlayerDataList   { get; set; }
     public PlayerType PlayerSide             { get; set; }
     public PlayerType AISide                 { get; set; }
@@ -26,10 +26,10 @@ public class GameManager : MonoBehaviour
 
     public void CreateList()
     {
-        SpaceDataList = new SpaceData[CommonConstants.SpaceDataListLength];
+        SpaceDataArray = new SpaceData[CommonConstants.SpaceDataListLength];
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {
-            SpaceDataList[i] = new SpaceData(i, string.Empty);
+            SpaceDataArray[i] = new SpaceData(i, string.Empty);
         }     
     }
 
@@ -77,50 +77,50 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver()
     {
-        AIUserManager.Instance.GetAIPlayedSpace(SpaceDataList);
-        if (!string.IsNullOrEmpty(SpaceDataList[0].Value) && SpaceDataList[0].Value == SpaceDataList[1].Value && SpaceDataList[1].Value == SpaceDataList[2].Value)
+        AIUserManager.Instance.GetAIPlayedSpace(SpaceDataArray);
+        if (!string.IsNullOrEmpty(SpaceDataArray[0].Value) && SpaceDataArray[0].Value == SpaceDataArray[1].Value && SpaceDataArray[1].Value == SpaceDataArray[2].Value)
         {
-            print("winn1" + SpaceDataList[0].Value);
+            print("winn1" + SpaceDataArray[0].Value);
             GameOver();
             return false;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataList[3].Value) && SpaceDataList[3].Value == SpaceDataList[4].Value && SpaceDataList[4].Value == SpaceDataList[5].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataArray[3].Value) && SpaceDataArray[3].Value == SpaceDataArray[4].Value && SpaceDataArray[4].Value == SpaceDataArray[5].Value)
         {
             print("winn2");
             GameOver();
             return false;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataList[6].Value) && SpaceDataList[6].Value == SpaceDataList[7].Value && SpaceDataList[7].Value == SpaceDataList[8].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataArray[6].Value) && SpaceDataArray[6].Value == SpaceDataArray[7].Value && SpaceDataArray[7].Value == SpaceDataArray[8].Value)
         {
             print("winn3");
             GameOver();
             return false;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataList[0].Value) && SpaceDataList[0].Value == SpaceDataList[3].Value  && SpaceDataList[6].Value == SpaceDataList[3].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataArray[0].Value) && SpaceDataArray[0].Value == SpaceDataArray[3].Value  && SpaceDataArray[6].Value == SpaceDataArray[3].Value)
         {
             print("winn4");
             GameOver();
             return false;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataList[1].Value) && SpaceDataList[1].Value == SpaceDataList[4].Value && SpaceDataList[7].Value == SpaceDataList[4].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataArray[1].Value) && SpaceDataArray[1].Value == SpaceDataArray[4].Value && SpaceDataArray[7].Value == SpaceDataArray[4].Value)
         {
             print("winn5");
             GameOver();
             return false;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataList[2].Value) && SpaceDataList[2].Value == SpaceDataList[5].Value && SpaceDataList[8].Value == SpaceDataList[5].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataArray[2].Value) && SpaceDataArray[2].Value == SpaceDataArray[5].Value && SpaceDataArray[8].Value == SpaceDataArray[5].Value)
         {
             print("winn6");
             GameOver();
             return false;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataList[0].Value) && SpaceDataList[0].Value == SpaceDataList[4].Value && SpaceDataList[8].Value == SpaceDataList[4].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataArray[0].Value) && SpaceDataArray[0].Value == SpaceDataArray[4].Value && SpaceDataArray[8].Value == SpaceDataArray[4].Value)
         {
             print("winn7");
             GameOver();
             return false;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataList[2].Value) && SpaceDataList[2].Value == SpaceDataList[4].Value && SpaceDataList[6].Value == SpaceDataList[4].Value)
+        else if (!string.IsNullOrEmpty(SpaceDataArray[2].Value) && SpaceDataArray[2].Value == SpaceDataArray[4].Value && SpaceDataArray[6].Value == SpaceDataArray[4].Value)
         {
             print("winn8");
             GameOver();
@@ -143,7 +143,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {
-            if (string.IsNullOrEmpty(SpaceDataList[i].Value))
+            if (string.IsNullOrEmpty(SpaceDataArray[i].Value))
                 return false;
         }
 
