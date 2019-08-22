@@ -75,70 +75,68 @@ public class GameManager : MonoBehaviour
         AIUserManager.Instance.IsGameOver = true;
     }
 
-    public bool IsGameOver()
+    public bool WinConditions(SpaceData[] spaceDataArray)
     {
-        AIUserManager.Instance.GetAIPlayedSpace(SpaceDataArray);
-        if (!string.IsNullOrEmpty(SpaceDataArray[0].Value) && SpaceDataArray[0].Value == SpaceDataArray[1].Value && SpaceDataArray[1].Value == SpaceDataArray[2].Value)
+        if (!string.IsNullOrEmpty(spaceDataArray[0].Value) && spaceDataArray[0].Value == spaceDataArray[1].Value && spaceDataArray[1].Value == spaceDataArray[2].Value)
         {
-            print("winn1" + SpaceDataArray[0].Value);
-            GameOver();
-            return false;
+            print("winn1" + spaceDataArray[0].Value);
+            return true;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataArray[3].Value) && SpaceDataArray[3].Value == SpaceDataArray[4].Value && SpaceDataArray[4].Value == SpaceDataArray[5].Value)
+        else if (!string.IsNullOrEmpty(spaceDataArray[3].Value) && spaceDataArray[3].Value == spaceDataArray[4].Value && spaceDataArray[4].Value == spaceDataArray[5].Value)
         {
             print("winn2");
-            GameOver();
-            return false;
+            return true;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataArray[6].Value) && SpaceDataArray[6].Value == SpaceDataArray[7].Value && SpaceDataArray[7].Value == SpaceDataArray[8].Value)
+        else if (!string.IsNullOrEmpty(spaceDataArray[6].Value) && spaceDataArray[6].Value == spaceDataArray[7].Value && spaceDataArray[7].Value == spaceDataArray[8].Value)
         {
             print("winn3");
-            GameOver();
-            return false;
+            return true;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataArray[0].Value) && SpaceDataArray[0].Value == SpaceDataArray[3].Value  && SpaceDataArray[6].Value == SpaceDataArray[3].Value)
+        else if (!string.IsNullOrEmpty(spaceDataArray[0].Value) && spaceDataArray[0].Value == spaceDataArray[3].Value  && spaceDataArray[6].Value == spaceDataArray[3].Value)
         {
             print("winn4");
-            GameOver();
-            return false;
+            return true;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataArray[1].Value) && SpaceDataArray[1].Value == SpaceDataArray[4].Value && SpaceDataArray[7].Value == SpaceDataArray[4].Value)
+        else if (!string.IsNullOrEmpty(spaceDataArray[1].Value) && spaceDataArray[1].Value == spaceDataArray[4].Value && spaceDataArray[7].Value == spaceDataArray[4].Value)
         {
             print("winn5");
-            GameOver();
-            return false;
+            return true;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataArray[2].Value) && SpaceDataArray[2].Value == SpaceDataArray[5].Value && SpaceDataArray[8].Value == SpaceDataArray[5].Value)
+        else if (!string.IsNullOrEmpty(spaceDataArray[2].Value) && spaceDataArray[2].Value == spaceDataArray[5].Value && spaceDataArray[8].Value == spaceDataArray[5].Value)
         {
             print("winn6");
-            GameOver();
-            return false;
+            return true;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataArray[0].Value) && SpaceDataArray[0].Value == SpaceDataArray[4].Value && SpaceDataArray[8].Value == SpaceDataArray[4].Value)
+        else if (!string.IsNullOrEmpty(spaceDataArray[0].Value) && spaceDataArray[0].Value == spaceDataArray[4].Value && spaceDataArray[8].Value == spaceDataArray[4].Value)
         {
             print("winn7");
-            GameOver();
-            return false;
+            return true;
         }
-        else if (!string.IsNullOrEmpty(SpaceDataArray[2].Value) && SpaceDataArray[2].Value == SpaceDataArray[4].Value && SpaceDataArray[6].Value == SpaceDataArray[4].Value)
+        else if (!string.IsNullOrEmpty(spaceDataArray[2].Value) && spaceDataArray[2].Value == spaceDataArray[4].Value && spaceDataArray[6].Value == spaceDataArray[4].Value)
         {
             print("winn8");
-            GameOver();
-            return false;
-        }
-        else if (IsAllSpaceDataFull())
-        {
             return true;
         }
         else
         {
-            AIUserManager.Instance.IsGameOver = false;
-            OrderPlayers();
-            return true;
+            //AIUserManager.Instance.IsGameOver = false;
+            //OrderPlayers();
+            return false;
         }
         
     }
-    
+
+    private bool IsGameOver()
+    {
+        if (IsAllSpaceDataFull())
+        {
+            GameOver();
+            return true;
+        }
+        else
+            return false;
+    }
+
     private bool IsAllSpaceDataFull()
     {
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
@@ -150,19 +148,24 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public int Score(int Depth)
+    public int Score(SpaceData[] spaceDataAray, int Depth)
     {
-        if (IsGameOver())
+        if (WinConditions(spaceDataAray))
         {
             if (PlayerSide == PlayerType.O)
-                return Depth - 10;
+                return  Depth - 10;
 
             else
-                return Depth + 10;
+                return  Depth + 10;
         }
         else
-            return Depth;
-        
+        {
+            if (IsAllSpaceDataFull())
+                return Depth;
+            else
+                return 0;
+        }
+            
     }
     
 }

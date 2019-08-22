@@ -95,77 +95,102 @@ namespace TicTacToe.Managers
                     childCount++;
             }
 
-
-            if (parentNode.ChildList.Count == 0)
-            {
-                parentNode.MinimaxValue = GameManager.Score(parentNode.Depth);
-            }
-            else
+            if (parentNode.ParentNode == null)
             {
                 SetMinimaxValue(parentNode);
+            }       
+            
+        }
 
-                if (parentNode.Player == PlayerType.X)
+        private void SetMinimaxValue(NodeData parentNode)
+        {
+            for (int i = 0; i < parentNode.ChildList.Count + 1; i++)
+            {
+                if (parentNode.ChildList.Count == 0)
                 {
-                    parentNode.MinimaxValue = GameManager.Score(parentNode.Depth);
-                    NodeData[] maxValueChilds = new NodeData[parentNode.ChildList.Count];   
-                    int maxValue = NodeData.GetChildNodes().Max(lstData => lstData.MinimaxValue);
-
-                    foreach (NodeData child in parentNode.ChildList)
-                    {
-                        if (parentNode.MinimaxValue < maxValue)
-                        {
-                            parentNode.MinimaxValue = maxValue;
-
-                            if (child.MinimaxValue == maxValue)
-                            {
-                                for (int i = 0; i < parentNode.ChildList.Count; i++)
-                                {
-                                    maxValueChilds[i] = child;
-                                }
-                            }
-                        }
-
-                    }
-                    Random randomMinimaxValue = new Random();
-                    int currentMaxValueIndex = randomMinimaxValue.Next(0, maxValueChilds.Length);
-                    NodeData currentMaxValueChild = maxValueChilds[currentMaxValueIndex];
-
+                    parentNode.MinimaxValue = GameManager.Score(GetArray(parentNode.SpaceDataListString), parentNode.Depth);
+                }
+                else if(i == parentNode.ChildList.Count)
+                {
+                    //parentNode.MinimaxValue = parentNode.ChildList[i].MinimaxValue;
+                    if (parentNode.Player == PlayerType.X)
+                        parentNode.MinimaxValue = parentNode.ChildList.Max(lstData => lstData.MinimaxValue);
+                    else
+                        parentNode.MinimaxValue = parentNode.ChildList.Min(lstData => lstData.MinimaxValue);
                 }
                 else
                 {
-                    parentNode.MinimaxValue = GameManager.Score(parentNode.Depth);
-                    NodeData[] minValueChilds = new NodeData[parentNode.ChildList.Count];    // en küçük aynı değere sahip olan childların dizisi
-                    int minValue = NodeData.GetChildNodes().Min(lstData => lstData.MinimaxValue);
-
-                    foreach (NodeData child in parentNode.ChildList)
+                    if (parentNode.ChildList[i].MinimaxValue != 0)
                     {
-                        if (parentNode.MinimaxValue > minValue)
+                        if (parentNode.Player == PlayerType.X)
                         {
-                            parentNode.MinimaxValue = minValue;
+                            //parentNode.MinimaxValue = GameManager.Score(parentNode.Depth);
+                            NodeData[] maxValueChilds = new NodeData[parentNode.ChildList.Count];
+                            int maxValue = parentNode.GetChildNodes().Max(lstData => lstData.MinimaxValue);
 
-                            if (child.MinimaxValue == minValue)
+                            foreach (NodeData child in parentNode.ChildList)
                             {
-                                for (int i = 0; i < parentNode.ChildList.Count; i++)
+                                if (parentNode.MinimaxValue < maxValue)
                                 {
-                                    minValueChilds[i] = child;
+                                    parentNode.MinimaxValue = maxValue;
+
+                                    if (child.MinimaxValue == maxValue)
+                                    {
+                                        for (int k = 0; k < parentNode.ChildList.Count; k++)
+                                        {
+                                            maxValueChilds[k] = child;
+                                        }
+                                    }
                                 }
+
                             }
+                            Random randomMinimaxValue = new Random();
+                            int currentMaxValueIndex = randomMinimaxValue.Next(0, maxValueChilds.Length);
+                            NodeData currentMaxValueChild = maxValueChilds[currentMaxValueIndex];
+                            parentNode.MinimaxValue = parentNode.ChildList[currentMaxValueIndex].MinimaxValue;
+                        }
+                        else
+                        {
+                            //parentNode.MinimaxValue = GameManager.Score(parentNode.Depth);
+                            NodeData[] minValueChilds = new NodeData[parentNode.ChildList.Count];    // en küçük aynı değere sahip olan childların dizisi
+                            int minValue = parentNode.GetChildNodes().Min(lstData => lstData.MinimaxValue);
+
+                            foreach (NodeData child in parentNode.ChildList)
+                            {
+                                if (parentNode.MinimaxValue > minValue)
+                                {
+                                    parentNode.MinimaxValue = minValue;
+
+                                    if (child.MinimaxValue == minValue)
+                                    {
+                                        for (int k = 0; k < parentNode.ChildList.Count; k++)
+                                        {
+                                            minValueChilds[k] = child;
+                                        }
+                                    }
+                                }
+
+                            }
+                            Random randomMinimaxValue = new Random();
+                            int currentMinValueIndex = randomMinimaxValue.Next(0, minValueChilds.Length);
+                            NodeData currentMinValueChild = minValueChilds[currentMinValueIndex];
+                            parentNode.MinimaxValue = parentNode.ChildList[currentMinValueIndex].MinimaxValue;
                         }
 
+                        
                     }
-                    Random randomMinimaxValue = new Random();
-                    int currentMinValueIndex = randomMinimaxValue.Next(0, minValueChilds.Length);
-                    NodeData currentMinValueChild = minValueChilds[currentMinValueIndex];
+                    else
+                    {
+                        SetMinimaxValue(parentNode.ChildList[0]);
 
+                    }
                 }
             }
-
-        }
-        private void SetMinimaxValue(NodeData parentNode)
-        {
-
-        }
-
-
+            
+            
         }
     }
+
+
+}
+    

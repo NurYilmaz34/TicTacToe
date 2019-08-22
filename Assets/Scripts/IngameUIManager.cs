@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using TicTacToe.Data;
+using TicTacToe.Managers;
 using UnityEngine;
 
 public class IngameUIManager : MonoBehaviour
@@ -22,7 +23,8 @@ public class IngameUIManager : MonoBehaviour
 
     public void ChangeOrderPlayer()
     {
-        GameManager.IsGameOver();
+        AIUserManager.Instance.GetAIPlayedSpace(GameManager.SpaceDataArray);
+       // GameManager.WinConditions();
     }
 
     private void SetSpaceData()
