@@ -23,7 +23,8 @@ public class IngameUIManager : MonoBehaviour
 
     public void ChangeOrderPlayer()
     {
-        AIUserManager.Instance.GetAIPlayedSpace(GameManager.SpaceDataArray);
+        int spaceId = AIUserManager.Instance.GetAIPlayedSpace(GameManager.SpaceDataArray);
+        Spaces[spaceId].Write();
        // GameManager.WinConditions();
     }
 

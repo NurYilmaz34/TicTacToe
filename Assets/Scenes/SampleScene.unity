@@ -517,7 +517,7 @@ GameObject:
   - component: {fileID: 402303301}
   - component: {fileID: 402303300}
   m_Layer: 5
-  m_Name: Backround
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1215,8 +1215,6 @@ MonoBehaviour:
   - {fileID: 419124012}
   - {fileID: 2128433841}
   GameManager: {fileID: 499404127}
-  ScoreX: {fileID: 0}
-  ScoreY: {fileID: 0}
 --- !u!114 &993120811 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 771517277522857471, guid: 2e095f0fea7acf246b18da3a97870c42,

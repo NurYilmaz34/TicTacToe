@@ -128,20 +128,20 @@ public class GameManager : MonoBehaviour
 
     private bool IsGameOver()
     {
-        if (IsAllSpaceDataFull())
-        {
-            GameOver();
-            return true;
-        }
-        else
-            return false;
+        //if (IsAllSpaceDataFull())
+        //{
+        //    GameOver();
+        //    return true;
+        //}
+        //else
+     return false;
     }
 
-    private bool IsAllSpaceDataFull()
+    private bool IsAllSpaceDataFull(SpaceData[] spaceDataAray)
     {
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {
-            if (string.IsNullOrEmpty(SpaceDataArray[i].Value))
+            if (string.IsNullOrEmpty(spaceDataAray[i].Value))
                 return false;
         }
 
@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (IsAllSpaceDataFull())
+            if (IsAllSpaceDataFull(spaceDataAray))
                 return Depth;
             else
                 return 0;
