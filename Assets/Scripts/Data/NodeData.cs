@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace TicTacToe.Data
 {
@@ -7,10 +6,10 @@ namespace TicTacToe.Data
     {
         public NodeData ParentNode          { get; set; }
         public List<NodeData> ChildList     { get; set; }
+        public PlayerType PlayerType        { get; set; }
         public string SpaceDataListString   { get; set; }
-        public int MinimaxValue;
-        public int Depth;
-        public PlayerType Player;
+        public int MinimaxValue             { get; set; }
+        public int Depth                    { get; set; }
 
         public NodeData()
         {

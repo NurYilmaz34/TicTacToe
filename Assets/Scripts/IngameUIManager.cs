@@ -25,7 +25,7 @@ public class IngameUIManager : MonoBehaviour
     {
         int spaceId = AIUserManager.Instance.GetAIPlayedSpace(GameManager.SpaceDataArray);
         Spaces[spaceId].Write();
-       // GameManager.WinConditions();
+        //GameManager.WinConditions();
     }
 
     private void SetSpaceData()

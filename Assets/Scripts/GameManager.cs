@@ -79,42 +79,42 @@ public class GameManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(spaceDataArray[0].Value) && spaceDataArray[0].Value == spaceDataArray[1].Value && spaceDataArray[1].Value == spaceDataArray[2].Value)
         {
-            print("winn1" + spaceDataArray[0].Value);
+            //print("winn1" + spaceDataArray[0].Value);
             return true;
         }
         else if (!string.IsNullOrEmpty(spaceDataArray[3].Value) && spaceDataArray[3].Value == spaceDataArray[4].Value && spaceDataArray[4].Value == spaceDataArray[5].Value)
         {
-            print("winn2");
+            //print("winn2");
             return true;
         }
         else if (!string.IsNullOrEmpty(spaceDataArray[6].Value) && spaceDataArray[6].Value == spaceDataArray[7].Value && spaceDataArray[7].Value == spaceDataArray[8].Value)
         {
-            print("winn3");
+            //print("winn3");
             return true;
         }
         else if (!string.IsNullOrEmpty(spaceDataArray[0].Value) && spaceDataArray[0].Value == spaceDataArray[3].Value  && spaceDataArray[6].Value == spaceDataArray[3].Value)
         {
-            print("winn4");
+            //print("winn4");
             return true;
         }
         else if (!string.IsNullOrEmpty(spaceDataArray[1].Value) && spaceDataArray[1].Value == spaceDataArray[4].Value && spaceDataArray[7].Value == spaceDataArray[4].Value)
         {
-            print("winn5");
+            //print("winn5");
             return true;
         }
         else if (!string.IsNullOrEmpty(spaceDataArray[2].Value) && spaceDataArray[2].Value == spaceDataArray[5].Value && spaceDataArray[8].Value == spaceDataArray[5].Value)
         {
-            print("winn6");
+            //print("winn6");
             return true;
         }
         else if (!string.IsNullOrEmpty(spaceDataArray[0].Value) && spaceDataArray[0].Value == spaceDataArray[4].Value && spaceDataArray[8].Value == spaceDataArray[4].Value)
         {
-            print("winn7");
+            //print("winn7");
             return true;
         }
         else if (!string.IsNullOrEmpty(spaceDataArray[2].Value) && spaceDataArray[2].Value == spaceDataArray[4].Value && spaceDataArray[6].Value == spaceDataArray[4].Value)
         {
-            print("winn8");
+            //print("winn8");
             return true;
         }
         else
@@ -148,11 +148,11 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public int Score(SpaceData[] spaceDataAray, int Depth)
+    public int GetScore(SpaceData[] spaceDataAray, PlayerType playerType, int Depth)
     {
         if (WinConditions(spaceDataAray))
         {
-            if (PlayerSide == PlayerType.O)
+            if (playerType == PlayerType.X)
                 return  Depth - 10;
 
             else

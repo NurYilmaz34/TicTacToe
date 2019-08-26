@@ -29,6 +29,7 @@ public class Space : MonoBehaviour
         spaceText.text =  "O";
         SpaceData.Value = "O";
     }
+    
 
     public void OnClickSpaceButton()
     {
