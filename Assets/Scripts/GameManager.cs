@@ -8,13 +8,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public SpaceData[] SpaceDataArray         { get; set; }
+    public SpaceData[] SpaceDataArray        { get; set; }
     public List<PlayerData> PlayerDataList   { get; set; }
     public PlayerType PlayerSide             { get; set; }
-    public PlayerType AISide                 { get; set; }
-    public PlayerType HumanSide              { get; set; }
     [SerializeField]
     public GameObject GameOverPanel;
+    public GameObject GameScorelessPanel;
 
     void Start()
     {
@@ -43,7 +42,6 @@ public class GameManager : MonoBehaviour
         }
     }
   
-
     private void WhoStarting(PlayerType playerType)
     {
         PlayerSide = playerType;
@@ -53,17 +51,7 @@ public class GameManager : MonoBehaviour
     {
         return PlayerSide;
     }
-
-    private PlayerType GetAiSide()
-    {
-        return AISide = PlayerType.O;
-    }
-
-    private PlayerType GetHumanSide()
-    {
-        return HumanSide = PlayerType.X;
-    }
-
+    
     private void OrderPlayers()
     {
         PlayerSide = (PlayerSide == PlayerType.O) ? PlayerType.X : PlayerType.O;
@@ -72,6 +60,11 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         GameOverPanel.gameObject.SetActive(true);
+        AIUserManager.Instance.IsGameOver = true;
+    }
+    public void GameScoreless()
+    {
+        GameScorelessPanel.gameObject.SetActive(true);
         AIUserManager.Instance.IsGameOver = true;
     }
 
@@ -134,10 +127,10 @@ public class GameManager : MonoBehaviour
         //    return true;
         //}
         //else
-     return false;
+            return false;
     }
 
-    private bool IsAllSpaceDataFull(SpaceData[] spaceDataAray)
+    public bool IsAllSpaceDataFull(SpaceData[] spaceDataAray)
     {
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {

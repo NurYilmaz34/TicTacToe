@@ -13,7 +13,6 @@ namespace TicTacToe.Managers
         static AIUserManager() { }
 
         public bool IsGameOver { get; set; }
-        //private int CurrentSpaceId;
         public NodeData NodeData;
         public GameManager GameManager;
 
