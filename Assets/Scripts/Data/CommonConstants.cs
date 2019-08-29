@@ -2,6 +2,13 @@
 
 namespace TicTacToe.Data
 {
+    public enum MatchResultType : byte
+    {
+        Draw = 0,
+        Win = 1,
+        Lose = 2
+    }
+
     public enum PlayerType : byte
     {
         X = 1,

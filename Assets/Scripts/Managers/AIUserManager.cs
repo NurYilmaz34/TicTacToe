@@ -2,7 +2,6 @@
 using TicTacToe.Data;
 using System.Linq;
 using Random = System.Random;
-using System;
 
 namespace TicTacToe.Managers
 {
@@ -12,13 +11,12 @@ namespace TicTacToe.Managers
         AIUserManager() { }
         static AIUserManager() { }
 
-        public bool IsGameOver { get; set; }
-        public NodeData NodeData;
+        public bool IsGameOver      { get; set; }
         public GameManager GameManager;
 
         public int GetAIPlayedSpace(SpaceData[] SpaceDataArray)
         {
-            NodeData rootNode = new NodeData        //nesne oluşturduk.
+            NodeData rootNodeData = new NodeData        //nesne oluşturduk.
             {
                 Depth = CommonConstants.FirstNodeDataDepth,
                 SpaceDataListString = GetArrayString(SpaceDataArray),
@@ -26,8 +24,8 @@ namespace TicTacToe.Managers
                 PlayerType = PlayerType.X
             };
 
-            GenerateMinMaxTree(rootNode);
-            int spaceId = CurrentSpaceId(rootNode.SpaceDataListString, GetNextStepDataListString(rootNode));
+            GenerateMinMaxTree(rootNodeData);
+            int spaceId = CurrentSpaceId(rootNodeData.SpaceDataListString, GetNextStepDataListString(rootNodeData));
             return spaceId;    
         }
 

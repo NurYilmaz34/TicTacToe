@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private Image panel;
+    public GameObject Panel;
     [SerializeField]
     private Text playerTxt;
     private Button playerButton;

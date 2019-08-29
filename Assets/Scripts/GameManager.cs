@@ -8,18 +8,16 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public SpaceData[] SpaceDataArray        { get; set; }
-    public List<PlayerData> PlayerDataList   { get; set; }
-    public PlayerType PlayerSide             { get; set; }
-    [SerializeField]
-    public GameObject GameOverPanel;
-    public GameObject GameScorelessPanel;
+    public SpaceData[] SpaceDataArray { get; set; }
+    public List<PlayerData> PlayerDataList { get; set; }
+    public PlayerType PlayerSide { get; set; }
+    public PlayerType? WinnerPlayer { get; set; }
 
     void Start()
     {
         CreateList();
         CreatePlayerList();
-        WhoStarting(PlayerType.X);
+        SetPlayerSide(PlayerType.X);
         AIUserManager.Instance.GameManager = this;
     }
 
@@ -29,43 +27,27 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
         {
             SpaceDataArray[i] = new SpaceData(i, string.Empty);
-        }     
+        }
     }
 
     private void CreatePlayerList()
     {
-        PlayerDataList = new List<PlayerData>(); 
-        for(int j = 0; j < CommonConstants.PlayerDataListLength; j++)
+        PlayerDataList = new List<PlayerData>();
+        for (int j = 0; j < CommonConstants.PlayerDataListLength; j++)
         {
             PlayerType playerType = j == 0 ? PlayerType.X : PlayerType.O;
             PlayerDataList.Add(new PlayerData(j, playerType));
         }
     }
-  
-    private void WhoStarting(PlayerType playerType)
+
+    private void SetPlayerSide(PlayerType playerType)
     {
         PlayerSide = playerType;
     }
 
-    private PlayerType GetPlayerSide()
+    public void ChangePlayerSide()
     {
-        return PlayerSide;
-    }
-    
-    private void OrderPlayers()
-    {
-        PlayerSide = (PlayerSide == PlayerType.O) ? PlayerType.X : PlayerType.O;
-    }
-
-    public void GameOver()
-    {
-        GameOverPanel.gameObject.SetActive(true);
-        AIUserManager.Instance.IsGameOver = true;
-    }
-    public void GameScoreless()
-    {
-        GameScorelessPanel.gameObject.SetActive(true);
-        AIUserManager.Instance.IsGameOver = true;
+        PlayerSide = PlayerSide == PlayerType.X ? PlayerType.O : PlayerType.X;
     }
 
     public bool WinConditions(SpaceData[] spaceDataArray)
@@ -85,7 +67,7 @@ public class GameManager : MonoBehaviour
             //print("winn3");
             return true;
         }
-        else if (!string.IsNullOrEmpty(spaceDataArray[0].Value) && spaceDataArray[0].Value == spaceDataArray[3].Value  && spaceDataArray[6].Value == spaceDataArray[3].Value)
+        else if (!string.IsNullOrEmpty(spaceDataArray[0].Value) && spaceDataArray[0].Value == spaceDataArray[3].Value && spaceDataArray[6].Value == spaceDataArray[3].Value)
         {
             //print("winn4");
             return true;
@@ -116,18 +98,31 @@ public class GameManager : MonoBehaviour
             //OrderPlayers();
             return false;
         }
-        
+
     }
 
-    private bool IsGameOver()
+    public int GetSpaceID(SpaceData[] spaceDataArray)
     {
-        //if (IsAllSpaceDataFull())
-        //{
-        //    GameOver();
-        //    return true;
-        //}
-        //else
-            return false;
+        return AIUserManager.Instance.GetAIPlayedSpace(spaceDataArray);
+    }
+
+    public bool IsGameOver()
+    {
+        if (WinConditions(SpaceDataArray))
+        {
+            WinnerPlayer = PlayerSide;
+            return true;
+        }
+        else
+        {
+            if (IsAllSpaceDataFull(SpaceDataArray))
+            {
+                WinnerPlayer = null;
+                return true;
+            }
+            else
+                return false;
+        }
     }
 
     public bool IsAllSpaceDataFull(SpaceData[] spaceDataAray)

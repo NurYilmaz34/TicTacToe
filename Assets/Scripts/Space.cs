@@ -1,6 +1,7 @@
 ﻿using TicTacToe.Data;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Space : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Space : MonoBehaviour
     
     void Update()
     {
+        
         //if (IngameUIManager.GameManager.PlayerSide == PlayerType.O)
         //    spaceButton.interactable = false;
         //else
@@ -29,19 +31,15 @@ public class Space : MonoBehaviour
         spaceText.text =  "O";
         SpaceData.Value = "O";
     }
-    
 
     public void OnClickSpaceButton()
     {
-        //Debug.Log(SpaceData.Id);
-        
         if (!string.IsNullOrEmpty(spaceText.text))
             return;
 
         spaceText.text = IngameUIManager.GameManager.PlayerSide == PlayerType.X ? "X" : "O";
         SpaceData.Value = IngameUIManager.GameManager.PlayerSide.ToString();
-        IngameUIManager.ChangeOrderPlayer();
         spaceButton.interactable = false;
-        //print(SpaceData.Value.ToString());
+        IngameUIManager.ChangeUI();
     }
 }
