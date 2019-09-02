@@ -27,15 +27,22 @@ public class IngameUIManager : MonoBehaviour
         SetSpaceData();
         SetPlayerData();
     }
-
     private void SetUI()
     {
         PlayerX.Panel.GetComponent<Image>().color = Color.blue;
     }
-
+    public void Reset()
+    {
+        for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
+        {
+            Spaces[i].ResetSpace();
+        }  
+    }
     public void GetGameState()
     {
         MatchResultPanel.gameObject.SetActive(true);
+        GameManager.SetPlayerSide(PlayerType.X);
+        Reset();
 
         if (GameManager.WinnerPlayer == PlayerType.X)
             MatchResultPanel.SetText(MatchResultType.Win);
@@ -43,6 +50,7 @@ public class IngameUIManager : MonoBehaviour
             MatchResultPanel.SetText(MatchResultType.Lose);
         else if (GameManager.WinnerPlayer == null)
             MatchResultPanel.SetText(MatchResultType.Draw);
+        
     }
     
     public void ChangeUI()
@@ -74,7 +82,7 @@ public class IngameUIManager : MonoBehaviour
          PlayerX.Panel.GetComponent<Image>().color = Color.blue;
 
         if (GameManager.IsGameOver())
-            GetGameState();
+            GetGameState();  
         else
             GameManager.ChangePlayerSide();
     }
@@ -83,7 +91,7 @@ public class IngameUIManager : MonoBehaviour
     //{
     //    yield return 
     //}
-
+    
     private void SetSpaceData()
     {
         for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)

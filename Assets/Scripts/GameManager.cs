@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SetPlayerSide(PlayerType playerType)
+    public void SetPlayerSide(PlayerType playerType)
     {
         PlayerSide = playerType;
     }
@@ -155,5 +155,5 @@ public class GameManager : MonoBehaviour
         }
             
     }
-    
+
 }

@@ -6,17 +6,23 @@ public class MatchResultPanel : MonoBehaviour
 {
     [SerializeField]
     private Text MatchResultText;
+    [SerializeField]
+    private Button RestartButton;
+    private IngameUIManager IngameUIManager;
+    //[SerializeField]
+    //private Space Space;
 
     private void Start()
     {
-
+        RestartButton.onClick.AddListener(() => OnClickRestartButton());
     }
 
-    private void Update()
+    public void OnClickRestartButton()
     {
-
+        gameObject.SetActive(false);
+        //Space.ResetSpace();
     }
-
+    
     public void SetText(MatchResultType matchResultType)
     {
         switch (matchResultType)

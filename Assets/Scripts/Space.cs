@@ -25,7 +25,12 @@ public class Space : MonoBehaviour
         //else
         //    spaceButton.interactable = true;
     }
-
+    public void ResetSpace()
+    {
+        spaceText.text = "";
+        SpaceData.Value = "";
+        spaceButton.interactable = true;
+    }
     public void Write()
     {
         spaceText.text =  "O";
