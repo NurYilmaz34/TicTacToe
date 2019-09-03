@@ -13,13 +13,13 @@ public class IngameUIManager : MonoBehaviour
     [SerializeField]
     private Player PlayerO;
     [SerializeField]
-    private Space[] Spaces;
+    public Space[] Spaces;
     [SerializeField]
     public GameManager GameManager;
     [SerializeField]
     private MatchResultPanel MatchResultPanel;
     [SerializeField]
-    private GameObject DusunPanel;
+    private GameObject ProcessingPanel;
 
     void Start()
     {
@@ -29,20 +29,13 @@ public class IngameUIManager : MonoBehaviour
     }
     private void SetUI()
     {
-        PlayerX.Panel.GetComponent<Image>().color = Color.blue;
-    }
-    public void Reset()
-    {
-        for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
-        {
-            Spaces[i].ResetSpace();
-        }  
+        PlayerX.Panel.GetComponent<Image>().color = Color.white;
+        PlayerO.Panel.GetComponent<Image>().color = Color.red;
     }
     public void GetGameState()
     {
         MatchResultPanel.gameObject.SetActive(true);
         GameManager.SetPlayerSide(PlayerType.X);
-        Reset();
 
         if (GameManager.WinnerPlayer == PlayerType.X)
             MatchResultPanel.SetText(MatchResultType.Win);
@@ -63,9 +56,9 @@ public class IngameUIManager : MonoBehaviour
         {
             GameManager.ChangePlayerSide();
 
-            DusunPanel.gameObject.SetActive(true);
-            PlayerX.Panel.GetComponent<Image>().color = Color.white;
-            PlayerO.Panel.GetComponent<Image>().color = Color.blue;
+            ProcessingPanel.gameObject.SetActive(true);
+            PlayerX.Panel.GetComponent<Image>().color = Color.red;
+            PlayerO.Panel.GetComponent<Image>().color = Color.white;
             StartCoroutine(WaitAIUser());       
         }
     }
@@ -74,23 +67,18 @@ public class IngameUIManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
-         int spaceId = GameManager.GetSpaceID(GameManager.SpaceDataArray);
-         Spaces[spaceId].Write();
-
-         DusunPanel.gameObject.SetActive(false);
-         PlayerO.Panel.GetComponent<Image>().color = Color.white;
-         PlayerX.Panel.GetComponent<Image>().color = Color.blue;
+        int spaceId = GameManager.GetSpaceID(GameManager.SpaceDataArray);
+        Spaces[spaceId].Write();
+        Spaces[spaceId].spaceButton.interactable = false;
+        ProcessingPanel.gameObject.SetActive(false);
+        PlayerO.Panel.GetComponent<Image>().color = Color.red;
+        PlayerX.Panel.GetComponent<Image>().color = Color.white;
 
         if (GameManager.IsGameOver())
             GetGameState();  
         else
             GameManager.ChangePlayerSide();
     }
-
-    //IEnumerator ChangeColor()
-    //{
-    //    yield return 
-    //}
     
     private void SetSpaceData()
     {

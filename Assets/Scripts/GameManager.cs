@@ -12,13 +12,18 @@ public class GameManager : MonoBehaviour
     public List<PlayerData> PlayerDataList { get; set; }
     public PlayerType PlayerSide { get; set; }
     public PlayerType? WinnerPlayer { get; set; }
+    public List<float> TimeList { get; set; }
+    public float[] TimeArray { get; set; }
+    public float Time;
 
     void Start()
     {
+        
         CreateList();
         CreatePlayerList();
         SetPlayerSide(PlayerType.X);
         AIUserManager.Instance.GameManager = this;
+        
     }
 
     public void CreateList()
@@ -106,11 +111,29 @@ public class GameManager : MonoBehaviour
         return AIUserManager.Instance.GetAIPlayedSpace(spaceDataArray);
     }
 
+    public void GetGameTime(int k)
+    {
+        // PlayerPrefs.SetFloat("time", TimeList.Count);
+        //for (int i = TimeList.Count; i > TimeList.Count - k; i--)
+        //{
+        //    PlayerPrefs.SetFloat("time", i);
+        //    //PlayerPrefs.SetFloat("time" + i, TimeList(i));
+        //}
+        //return 
+        for (int i = 0; i < TimeArray.Length; i++)
+        {
+            float item = TimeArray[i];
+            PlayerPrefs.SetFloat("item",TimeArray[i]);
+        }
+    }
+
     public bool IsGameOver()
     {
         if (WinConditions(SpaceDataArray))
         {
             WinnerPlayer = PlayerSide;
+            //PlayerPrefs.SetFloat("time", UnityEngine.Time.time);
+            //TimeList.Add(UnityEngine.Time.time);
             return true;
         }
         else
@@ -118,6 +141,7 @@ public class GameManager : MonoBehaviour
             if (IsAllSpaceDataFull(SpaceDataArray))
             {
                 WinnerPlayer = null;
+                //TimeList.Add(UnityEngine.Time.time);
                 return true;
             }
             else
@@ -141,10 +165,10 @@ public class GameManager : MonoBehaviour
         if (WinConditions(spaceDataAray))
         {
             if (playerType == PlayerType.X)
-                return  Depth - 10;
+                return  - 10;
 
             else
-                return  Depth + 10;
+                return  + 10;
         }
         else
         {

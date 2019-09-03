@@ -7,7 +7,8 @@ public class Space : MonoBehaviour
 {
     [SerializeField]
     private Text spaceText;
-    private Button spaceButton;
+    [SerializeField]
+    public Button spaceButton;
     public SpaceData SpaceData              { get; set; }
     public IngameUIManager IngameUIManager  { get; set; }
     

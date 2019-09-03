@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 
-public class LoginPanel : MonoBehaviour
+public class MenuPanel : MonoBehaviour
 {
 
     [SerializeField]
@@ -13,13 +13,28 @@ public class LoginPanel : MonoBehaviour
     [SerializeField]
     private Button ExitButton;
     [SerializeField]
-    private GameObject MuteButton;
+    private GameObject TimePanel;
+    [SerializeField]
+    public InputField NumberText;
+    [SerializeField]
+    private int NewNumber;
+    [SerializeField]
+    GameManager GameManager;
+    [SerializeField]
+    private Text TimeText;
+    
 
     void Start()
     {
         PlayButton.onClick.AddListener(() => PlayButtonOnClik());
         SettingsButton.onClick.AddListener(() => SettingsButtonOnClick());
         ExitButton.onClick.AddListener(() => ExitButtonOnClick());
+
+        //NumberText.keyboardType = TouchScreenKeyboardType.NumberPad;
+        NumberText.characterValidation = InputField.CharacterValidation.Integer;
+
+        NewNumber = int.Parse(NumberText.text);
+        GameManager.GetGameTime(NewNumber);
     }
     
     private void PlayButtonOnClik()
@@ -28,10 +43,12 @@ public class LoginPanel : MonoBehaviour
     }
     private void SettingsButtonOnClick()
     {
-        MuteButton.SetActive(true);
+        TimePanel.SetActive(true);
     }
     private void ExitButtonOnClick()
     {
         Application.Quit();
     }
+
+    
 }

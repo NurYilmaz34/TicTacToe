@@ -8,6 +8,7 @@ public class MatchResultPanel : MonoBehaviour
     private Text MatchResultText;
     [SerializeField]
     private Button RestartButton;
+    [SerializeField]
     private IngameUIManager IngameUIManager;
     //[SerializeField]
     //private Space Space;
@@ -20,21 +21,29 @@ public class MatchResultPanel : MonoBehaviour
     public void OnClickRestartButton()
     {
         gameObject.SetActive(false);
-        //Space.ResetSpace();
+        ResetSpace();
     }
-    
+
+    private void ResetSpace()
+    {
+        for (int i = 0; i < CommonConstants.SpaceDataListLength; i++)
+        {
+            IngameUIManager.Spaces[i].ResetSpace();
+        }
+    }
+
     public void SetText(MatchResultType matchResultType)
     {
         switch (matchResultType)
         {
             case MatchResultType.Draw:
-                MatchResultText.text = LocalizationConstants.DRAW;
+                MatchResultText.text = LocalizationConstants.DRAW.ToUpper();
                 break;
             case MatchResultType.Win:
-                MatchResultText.text = LocalizationConstants.WIN;
+                MatchResultText.text = LocalizationConstants.WIN.ToUpper();
                 break;
             case MatchResultType.Lose:
-                MatchResultText.text = LocalizationConstants.LOSE;
+                MatchResultText.text = LocalizationConstants.LOSE.ToUpper();
                 break;
             default:
                 break;
