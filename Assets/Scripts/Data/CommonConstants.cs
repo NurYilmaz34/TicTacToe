@@ -9,6 +9,12 @@ namespace TicTacToe.Data
         Lose = 2
     }
 
+    public enum PanelType : byte
+    {
+        MenuPanel = 1,
+        MatchResultPanel = 2
+    }
+
     public enum PlayerType : byte
     {
         X = 1,
@@ -22,6 +28,7 @@ namespace TicTacToe.Data
         public const int PlayerDataListLength = 2;
         public const int StartTotalDepth = 9;
         public const int FirstNodeDataDepth = 0;
+        public const int RecordingTime = 10;
     }
     
 }

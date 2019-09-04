@@ -5,6 +5,7 @@ using System.Linq;
 using TicTacToe.Data;
 using TicTacToe.Managers;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,19 +14,24 @@ public class GameManager : MonoBehaviour
     public PlayerType PlayerSide { get; set; }
     public PlayerType? WinnerPlayer { get; set; }
     public List<float> TimeList { get; set; }
-    public float[] TimeArray { get; set; }
-    public float Time;
+    private float StartTime;
+    private float FinishTime;
+    public Text timetext;
 
     void Start()
     {
-        
+        StartTime = Time.time;
         CreateList();
         CreatePlayerList();
         SetPlayerSide(PlayerType.X);
         AIUserManager.Instance.GameManager = this;
-        
+        CreateTimeList();
     }
 
+    public void CreateTimeList()
+    {
+        TimeList = new List<float>();
+    }
     public void CreateList()
     {
         SpaceDataArray = new SpaceData[CommonConstants.SpaceDataListLength];
@@ -113,6 +119,13 @@ public class GameManager : MonoBehaviour
 
     public void GetGameTime(int k)
     {
+        for (int i = TimeList.Count; i > TimeList.Count - k; i--)
+        {
+            timetext.text = TimeList[i].ToString();
+            //Debug.Log(TimeList[i]);
+            //PlayerPrefs.SetFloat("item",TimeArray[i]);
+        }
+
         // PlayerPrefs.SetFloat("time", TimeList.Count);
         //for (int i = TimeList.Count; i > TimeList.Count - k; i--)
         //{
@@ -120,20 +133,30 @@ public class GameManager : MonoBehaviour
         //    //PlayerPrefs.SetFloat("time" + i, TimeList(i));
         //}
         //return 
-        for (int i = 0; i < TimeArray.Length; i++)
-        {
-            float item = TimeArray[i];
-            PlayerPrefs.SetFloat("item",TimeArray[i]);
-        }
+
     }
+    //public void Gametime()
+    //{
+    //    for (int i = 0; i < TimeList.Count; i++)
+    //    {
+    //        if (i == 0)
+    //            Debug.Log(TimeList[i]);
+    //        else
+    //            Debug.Log(TimeList[i] - TimeList[i - 1]);
+    //    }
+    //}
 
     public bool IsGameOver()
     {
         if (WinConditions(SpaceDataArray))
         {
             WinnerPlayer = PlayerSide;
-            //PlayerPrefs.SetFloat("time", UnityEngine.Time.time);
+            FinishTime = Time.time - StartTime;
+            PlayerPrefs.SetInt(PlayerPrefConstants.TimeKey, Convert.ToInt32(FinishTime));
+            // PlayerPrefs.SetFloat("time", FinishTime);
+            TimeList.Add(FinishTime);
             //TimeList.Add(UnityEngine.Time.time);
+            //Debug.Log(UnityEngine.Time.time);
             return true;
         }
         else
@@ -141,7 +164,10 @@ public class GameManager : MonoBehaviour
             if (IsAllSpaceDataFull(SpaceDataArray))
             {
                 WinnerPlayer = null;
-                //TimeList.Add(UnityEngine.Time.time);
+                FinishTime = Time.time - StartTime;
+                PlayerPrefs.SetInt(PlayerPrefConstants.TimeKey, Convert.ToInt32(FinishTime));
+                // PlayerPrefs.SetFloat("time", FinishTime);
+                TimeList.Add(FinishTime);
                 return true;
             }
             else

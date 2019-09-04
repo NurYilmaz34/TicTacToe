@@ -5,6 +5,7 @@ using TicTacToe.Data;
 using TicTacToe.Managers;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class IngameUIManager : MonoBehaviour
 {
@@ -94,6 +95,29 @@ public class IngameUIManager : MonoBehaviour
         PlayerX.PlayerData = GameManager.PlayerDataList.First(lstPlayerData => lstPlayerData.PlayerType == PlayerType.X);
         PlayerO.PlayerData = GameManager.PlayerDataList.First(lstPlayerData => lstPlayerData.PlayerType == PlayerType.O);
     }
-    
 
+
+    public void OpenPanel(PanelType panelType)
+    {
+        CloseAllPanels();
+        switch (panelType)
+        {
+            case PanelType.MenuPanel:
+                MatchResultPanel.gameObject.SetActive(true);
+                break;
+            case PanelType.MatchResultPanel:
+                MatchResultPanel.gameObject.SetActive(true);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void CloseAllPanels()
+    {
+        MatchResultPanel.gameObject.SetActive(false);
+        MatchResultPanel.gameObject.SetActive(false);
+        MatchResultPanel.gameObject.SetActive(false);
+        MatchResultPanel.gameObject.SetActive(false);
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using TicTacToe.Data;
 
 public class MenuPanel : MonoBehaviour
 {
@@ -22,30 +23,35 @@ public class MenuPanel : MonoBehaviour
     GameManager GameManager;
     [SerializeField]
     private Text TimeText;
-    
+    [SerializeField]
+    private Button SaveButton;
 
     void Start()
     {
-        PlayButton.onClick.AddListener(() => PlayButtonOnClik());
-        SettingsButton.onClick.AddListener(() => SettingsButtonOnClick());
-        ExitButton.onClick.AddListener(() => ExitButtonOnClick());
+        PlayButton.onClick.AddListener(() => OnClickPlayButton());
+        SettingsButton.onClick.AddListener(() => OnClickSettingsButton());
+        ExitButton.onClick.AddListener(() => OnClickExitButton());
+        SaveButton.onClick.AddListener(() => OnClickSaveButton());
+    }
 
-        //NumberText.keyboardType = TouchScreenKeyboardType.NumberPad;
-        NumberText.characterValidation = InputField.CharacterValidation.Integer;
-
-        NewNumber = int.Parse(NumberText.text);
+    private void OnClickSaveButton()
+    {
+        PlayerPrefs.SetInt(PlayerPrefConstants.TimeKey, Convert.ToInt32(NumberText.text));
+        //PlayerPrefs.GetFloat(PlayerPrefConstants.TimeKey, Convert.ToInt32(TimeText.text));
+        NewNumber = PlayerPrefs.GetInt(PlayerPrefConstants.TimeKey, Convert.ToInt32(NumberText.text));
         GameManager.GetGameTime(NewNumber);
     }
-    
-    private void PlayButtonOnClik()
+
+    private void OnClickPlayButton()
     {
         gameObject.SetActive(false);
     }
-    private void SettingsButtonOnClick()
+    private void OnClickSettingsButton()
     {
         TimePanel.SetActive(true);
+        NumberText.characterValidation = InputField.CharacterValidation.Integer;
     }
-    private void ExitButtonOnClick()
+    private void OnClickExitButton()
     {
         Application.Quit();
     }

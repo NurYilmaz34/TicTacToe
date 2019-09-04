@@ -10,8 +10,6 @@ public class MatchResultPanel : MonoBehaviour
     private Button RestartButton;
     [SerializeField]
     private IngameUIManager IngameUIManager;
-    //[SerializeField]
-    //private Space Space;
 
     private void Start()
     {
